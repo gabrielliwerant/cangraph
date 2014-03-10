@@ -12,12 +12,12 @@
 </head>
 
 <body>
-    <canvas id="cangraph-example1" width="200px" height="200px"></canvas>
+    <canvas id="cangraph-ex1" width="200px" height="200px"></canvas>
 
     <script>
         $(document).ready(function () {
             var fx1 = function (x) { return Math.sin(x); }
-            var cangraph = new Cangraph();
+            var cangraph = new Cangraph('cangraph-ex1');
 
             cangraph.draw(fx1);
         });
