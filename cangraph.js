@@ -8,12 +8,23 @@
  */
 (function ($) {
 
-    function Cangraph() {
-        //
+    function Cangraph(canvasId) {
+
+        this.set('canvasId', canvasId);
     }
 
+    Cangraph.prototype.set = function (name, value) {
+        if (!value) {
+            console.log(name, 'is undefined or null!');
+
+            return false;
+        }
+
+        this[name] = value;
+    };
+
     Cangraph.prototype.draw = function (fx) {
-     var canvas = document.getElementById("cangraph-example1");
+     var canvas = document.getElementById(this.canvasId);
      if (null==canvas || !canvas.getContext) return;
 
      var axes={}, ctx=canvas.getContext("2d");
