@@ -8,6 +8,13 @@
  */
 (function ($) {
 
+    /**
+     * Constructor and initialization
+     *
+     * @class Cangraph
+     *
+     * @param {String} canvasId The canvas element to draw on
+     */
     function Cangraph(canvasId) {
         var canvas;
 
@@ -61,7 +68,7 @@
       else         ctx.lineTo(x0+xx,y0-yy);
      }
      ctx.stroke();
-    }
+    };
 
     Cangraph.prototype.showAxes = function (ctx,axes) {
      var x0=axes.x0, w=ctx.canvas.width;
@@ -72,7 +79,7 @@
      ctx.moveTo(xmin,y0); ctx.lineTo(w,y0);  // X axis
      ctx.moveTo(x0,0);    ctx.lineTo(x0,h);  // Y axis
      ctx.stroke();
-    }
+    };
 
     // Attach object to global namespace
     this.Cangraph = Cangraph;
