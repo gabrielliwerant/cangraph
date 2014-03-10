@@ -9,8 +9,14 @@
 (function ($) {
 
     function Cangraph(canvasId) {
+        var canvas;
 
         this.set('canvasId', canvasId);
+
+        canvas = document.getElementById(this.canvasId);
+        this.set('canvas', canvas);
+
+        this.setContext();
     }
 
     Cangraph.prototype.set = function (name, value) {
@@ -23,20 +29,23 @@
         this[name] = value;
     };
 
+    Cangraph.prototype.setContext = function () {
+        var context = this.canvas.getContext('2d');
+
+        this.set('context', context);
+    };
+
     Cangraph.prototype.draw = function (fx) {
-     var canvas = document.getElementById(this.canvasId);
-     if (null==canvas || !canvas.getContext) return;
+     var axes={};
 
-     var axes={}, ctx=canvas.getContext("2d");
-
-     axes.x0 = .5 + .5*canvas.width;  // x0 pixels from left to x=0
-     axes.y0 = .5 + .5*canvas.height; // y0 pixels from top to y=0
+     axes.x0 = .5 + .5*this.canvas.width;  // x0 pixels from left to x=0
+     axes.y0 = .5 + .5*this.canvas.height; // y0 pixels from top to y=0
      axes.scale = 40;                 // 40 pixels from x=0 to x=1
      axes.doNegativeX = true;
 
-     this.showAxes(ctx,axes);
-     this.funGraph(ctx,axes,fx,"rgb(11,153,11)",1);
-    }
+     this.showAxes(this.context, axes);
+     this.funGraph(this.context, axes, fx, "rgb(11,153,11)", 1);
+    };
 
     Cangraph.prototype.funGraph = function (ctx,axes,func,color,thick) {
      var xx, yy, dx=4, x0=axes.x0, y0=axes.y0, scale=axes.scale;
