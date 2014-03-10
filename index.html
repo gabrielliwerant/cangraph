@@ -10,4 +10,17 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="cangraph.js"></script>
 </head>
+
+<body>
+    <canvas id="cangraph-example1" width="200px" height="200px"></canvas>
+
+    <script>
+        $(document).ready(function () {
+            var fx1 = function (x) { return Math.sin(x); }
+            var cangraph = new Cangraph();
+
+            cangraph.draw(fx1);
+        });
+    </script>
+</body>
 </html>

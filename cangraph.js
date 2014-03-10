@@ -7,23 +7,27 @@
  * @link http://www.javascripter.net/faq/plotafunctiongraph.htm
  */
 (function ($) {
-    function fun1(x) {return Math.sin(x);  }
 
-    function draw() {
-     var canvas = document.getElementById("canvas");
+    function Cangraph() {
+        //
+    }
+
+    Cangraph.prototype.draw = function (fx) {
+     var canvas = document.getElementById("cangraph-example1");
      if (null==canvas || !canvas.getContext) return;
 
      var axes={}, ctx=canvas.getContext("2d");
+
      axes.x0 = .5 + .5*canvas.width;  // x0 pixels from left to x=0
      axes.y0 = .5 + .5*canvas.height; // y0 pixels from top to y=0
      axes.scale = 40;                 // 40 pixels from x=0 to x=1
      axes.doNegativeX = true;
 
-     showAxes(ctx,axes);
-     funGraph(ctx,axes,fun1,"rgb(11,153,11)",1);
+     this.showAxes(ctx,axes);
+     this.funGraph(ctx,axes,fx,"rgb(11,153,11)",1);
     }
 
-    function funGraph (ctx,axes,func,color,thick) {
+    Cangraph.prototype.funGraph = function (ctx,axes,func,color,thick) {
      var xx, yy, dx=4, x0=axes.x0, y0=axes.y0, scale=axes.scale;
      var iMax = Math.round((ctx.canvas.width-x0)/dx);
      var iMin = axes.doNegativeX ? Math.round(-x0/dx) : 0;
@@ -39,7 +43,7 @@
      ctx.stroke();
     }
 
-    function showAxes(ctx,axes) {
+    Cangraph.prototype.showAxes = function (ctx,axes) {
      var x0=axes.x0, w=ctx.canvas.width;
      var y0=axes.y0, h=ctx.canvas.height;
      var xmin = axes.doNegativeX ? 0 : x0;
@@ -49,4 +53,7 @@
      ctx.moveTo(x0,0);    ctx.lineTo(x0,h);  // Y axis
      ctx.stroke();
     }
+
+    // Attach object to global namespace
+    this.Cangraph = Cangraph;
 }).call(this, $);
