@@ -67,15 +67,18 @@
             this.set('xMin', this.x0);
         }
     };
+
+    Cangraph.prototype.drawAxes = function (fx) {
+        this.context.beginPath();
+        this.context.strokeStyle = "rgb(128,128,128)";
+        this.context.moveTo(this.xMin, this.y0);
+        this.context.lineTo(this.canvas.width, this.y0);
+        this.context.moveTo(this.x0, 0);
+        this.context.lineTo(this.x0, this.canvas.height);
+        this.context.stroke();
+    };
+
     Cangraph.prototype.draw = function (fx) {
-     var axes={};
-
-     axes.x0 = .5 + .5*this.canvas.width;  // x0 pixels from left to x=0
-     axes.y0 = .5 + .5*this.canvas.height; // y0 pixels from top to y=0
-     axes.scale = 40;                 // 40 pixels from x=0 to x=1
-     axes.doNegativeX = true;
-
-     this.showAxes(this.context, axes);
      this.funGraph(this.context, fx, "rgb(11,153,11)", 1);
     };
 
@@ -95,17 +98,6 @@
       if (i==iMin) ctx.moveTo(this.x0+xx,this.y0-yy);
       else         ctx.lineTo(this.x0+xx,this.y0-yy);
      }
-     ctx.stroke();
-    };
-
-    Cangraph.prototype.showAxes = function (ctx,axes) {
-     var x0=axes.x0, w=ctx.canvas.width;
-     var y0=axes.y0, h=ctx.canvas.height;
-     var xmin = axes.doNegativeX ? 0 : x0;
-     ctx.beginPath();
-     ctx.strokeStyle = "rgb(128,128,128)";
-     ctx.moveTo(xmin,y0); ctx.lineTo(w,y0);  // X axis
-     ctx.moveTo(x0,0);    ctx.lineTo(x0,h);  // Y axis
      ctx.stroke();
     };
 
