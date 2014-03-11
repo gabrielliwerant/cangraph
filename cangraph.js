@@ -25,7 +25,13 @@
                 showNegativeX: true,
                 strokeColor: '#000000',
                 showXAxis: true,
-                showYAxis: true
+                showYAxis: true,
+                markings: {
+                    showX: true,
+                    showY: true,
+                    xInterval: 10,
+                    xHeight: 5
+                }
             },
             graph: {
                 strokeColor: '#1fcd38',
@@ -100,7 +106,24 @@
             this.context.lineTo(this.x0, this.canvas.height);
         }
 
+        this.drawAxesMarkingsHelper();
         this.context.stroke();
+    };
+
+    Cangraph.prototype.drawAxesMarkingsHelper = function () {
+        var iX;
+        var iXMax = Math.ceil(this.canvas.width - this.xMin);
+        var iXMaxScale = Math.ceil((this.canvas.width - this.xMin) / this.options.axes.markings.xInterval);
+
+        if (this.options.axes.markings.showX) {
+            for (iX = Math.floor(this.xMin); iX <= iXMax; iX += 1) {
+                if (iX % iXMaxScale === 0) {
+                    this.context.moveTo(iX, this.y0 + this.options.axes.markings.xHeight);
+                    this.context.lineTo(iX, this.y0 - this.options.axes.markings.xHeight);
+                    this.context.strokeStyle = this.options.axes.strokeColor;
+                }
+            }
+        }
     };
 
     Cangraph.prototype.drawGraph = function (fx) {
