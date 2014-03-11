@@ -92,7 +92,7 @@
         }
     };
 
-    Cangraph.prototype.drawAxes = function (fx) {
+    Cangraph.prototype.drawAxes = function () {
         this.context.beginPath();
         this.context.strokeStyle = this.options.axes.strokeColor;
 
