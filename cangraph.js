@@ -27,7 +27,8 @@
             },
             graph: {
                 strokeColor: '#1fcd38',
-                lineWidth: '1'
+                lineWidth: '1',
+                scale: 4
             }
         };
         var canvas;
@@ -42,8 +43,8 @@
         this.options = options || {};
         this.options = $.extend(true, {}, defaults, this.options);
 
-        // Derive axes values from defaults/options and set on object
         this.setDerivedAxesProperties();
+        this.setDerivedGraphProperties();
     }
 
     Cangraph.prototype.set = function (name, value) {
@@ -73,6 +74,16 @@
         }
     };
 
+    Cangraph.prototype.setDerivedGraphProperties = function () {
+        this.set('graphPlottingMax', Math.round((this.canvas.width - this.x0) / this.options.graph.scale));
+
+        if (this.options.axes.showNegativeX) {
+            this.set('graphPlottingMin', Math.round(-this.x0 / this.options.graph.scale));
+        } else {
+            this.set('graphPlottingMin', 0);
+        }
+    };
+
     Cangraph.prototype.drawAxes = function (fx) {
         this.context.beginPath();
         this.context.strokeStyle = this.options.axes.strokeColor;
@@ -84,31 +95,22 @@
     };
 
     Cangraph.prototype.drawGraph = function (fx) {
-        var xx;
-        var yy;
-        var dx = 4;
-        var scale = this.options.axes.scale;
-        var iMax = Math.round((this.canvas.width - this.x0) / dx);
-        var iMin;
+        var x;
+        var y;
         var i;
-
-        if (this.options.axes.showNegativeX) {
-            iMin = Math.round(-this.x0 / dx);
-        } else {
-            iMin = 0;
-        }
 
         this.context.beginPath();
         this.context.lineWidth = this.options.graph.lineWidth;
         this.context.strokeStyle = this.options.graph.strokeColor;
 
-        for (i = iMin; i <= iMax; i += 1) {
-            xx = dx * i;
-            yy = scale * fx(xx / scale);
-            if (i === iMin) {
-                this.context.moveTo(this.x0 + xx, this.y0 - yy);
+        for (i = this.graphPlottingMin; i <= this.graphPlottingMax; i += 1) {
+            x = this.options.graph.scale * i;
+            y = this.options.axes.scale * fx(x / this.options.axes.scale);
+
+            if (i === this.graphPlottingMin) {
+                this.context.moveTo(this.x0 + x, this.y0 - y);
             } else {
-                this.context.lineTo(this.x0 + xx, this.y0 - yy);
+                this.context.lineTo(this.x0 + x, this.y0 - y);
             }
         }
 
