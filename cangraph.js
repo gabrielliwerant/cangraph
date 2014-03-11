@@ -84,22 +84,35 @@
     };
 
     Cangraph.prototype.drawGraph = function (fx) {
-     var xx;
-     var yy;
-     var dx = 4;
-     var scale = this.options.axes.scale;
-     var iMax = Math.round((this.canvas.width-this.x0)/dx);
-     var iMin = this.options.axes.showNegativeX ? Math.round(-this.x0/dx) : 0;
-     this.context.beginPath();
-     this.context.lineWidth = this.options.graph.lineWidth;
-     this.context.strokeStyle = this.options.graph.strokeColor;
+        var xx;
+        var yy;
+        var dx = 4;
+        var scale = this.options.axes.scale;
+        var iMax = Math.round((this.canvas.width - this.x0) / dx);
+        var iMin;
+        var i;
 
-     for (var i=iMin;i<=iMax;i++) {
-      xx = dx*i; yy = scale*fx(xx/scale);
-      if (i==iMin) this.context.moveTo(this.x0+xx,this.y0-yy);
-      else         this.context.lineTo(this.x0+xx,this.y0-yy);
-     }
-     this.context.stroke();
+        if (this.options.axes.showNegativeX) {
+            iMin = Math.round(-this.x0 / dx);
+        } else {
+            iMin = 0;
+        }
+
+        this.context.beginPath();
+        this.context.lineWidth = this.options.graph.lineWidth;
+        this.context.strokeStyle = this.options.graph.strokeColor;
+
+        for (i = iMin; i <= iMax; i += 1) {
+            xx = dx * i;
+            yy = scale * fx(xx / scale);
+            if (i === iMin) {
+                this.context.moveTo(this.x0 + xx, this.y0 - yy);
+            } else {
+                this.context.lineTo(this.x0 + xx, this.y0 - yy);
+            }
+        }
+
+        this.context.stroke();
     };
 
     // Attach object to global namespace
