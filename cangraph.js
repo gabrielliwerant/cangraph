@@ -23,7 +23,9 @@
                 yOffset: 0,
                 scale: 40,
                 showNegativeX: true,
-                strokeColor: '#000000'
+                strokeColor: '#000000',
+                showXAxis: true,
+                showYAxis: true
             },
             graph: {
                 strokeColor: '#1fcd38',
@@ -87,10 +89,17 @@
     Cangraph.prototype.drawAxes = function (fx) {
         this.context.beginPath();
         this.context.strokeStyle = this.options.axes.strokeColor;
-        this.context.moveTo(this.xMin, this.y0);
-        this.context.lineTo(this.canvas.width, this.y0);
-        this.context.moveTo(this.x0, 0);
-        this.context.lineTo(this.x0, this.canvas.height);
+
+        if (this.options.axes.showXAxis) {
+            this.context.moveTo(this.xMin, this.y0);
+            this.context.lineTo(this.canvas.width, this.y0);
+        }
+
+        if (this.options.axes.showYAxis) {
+            this.context.moveTo(this.x0, 0);
+            this.context.lineTo(this.x0, this.canvas.height);
+        }
+
         this.context.stroke();
     };
 
