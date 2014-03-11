@@ -14,6 +14,7 @@
      * @class Cangraph
      *
      * @param {String} canvasId The canvas element to draw on
+     * @param {Object} options Allows us to change defaults upon instantiation
      */
     function Cangraph(canvasId, options) {
         var defaults = {
@@ -26,11 +27,10 @@
         };
         var canvas;
 
+        // Set canvas and context
         this.set('canvasId', canvasId);
-
         canvas = document.getElementById(this.canvasId);
         this.set('canvas', canvas);
-
         this.setContext();
 
         // Merge defaults with passed in options
