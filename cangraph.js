@@ -27,7 +27,7 @@
     }
 
     Cangraph.prototype.set = function (name, value) {
-        if (!value) {
+        if (value === null || typeof value === 'undefined') {
             console.log(name, 'is undefined or null!');
 
             return false;
