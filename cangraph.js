@@ -22,7 +22,8 @@
                 xOffset: 0,
                 yOffset: 0,
                 scale: 40,
-                showNegativeX: true
+                showNegativeX: true,
+                strokeColor: '#000000'
             }
         };
         var canvas;
@@ -70,7 +71,7 @@
 
     Cangraph.prototype.drawAxes = function (fx) {
         this.context.beginPath();
-        this.context.strokeStyle = "rgb(128,128,128)";
+        this.context.strokeStyle = this.options.axes.strokeColor;
         this.context.moveTo(this.xMin, this.y0);
         this.context.lineTo(this.canvas.width, this.y0);
         this.context.moveTo(this.x0, 0);
