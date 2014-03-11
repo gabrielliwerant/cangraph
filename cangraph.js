@@ -5,6 +5,8 @@
  * engine was taken from the link below and modified.
  *
  * @link http://www.javascripter.net/faq/plotafunctiongraph.htm
+ *
+ * @todo Allow setting into nesting objects for better organization
  */
 (function ($) {
 
@@ -55,6 +57,14 @@
         this.setDerivedGraphProperties();
     }
 
+    /**
+     * Basic setter to help provide validation and error checking
+     *
+     * @method set
+     *
+     * @param {String} name Member name to store value
+     * @param {Mixed} value To store in member name
+     */
     Cangraph.prototype.set = function (name, value) {
         if (value === null || typeof value === 'undefined') {
             console.log(name, 'is undefined or null!');
@@ -65,12 +75,22 @@
         this[name] = value;
     };
 
+    /**
+     * Set canvas context for later use
+     *
+     * @method setContext
+     */
     Cangraph.prototype.setContext = function () {
         var context = this.canvas.getContext('2d');
 
         this.set('context', context);
     };
 
+    /**
+     * Set axes properties, that can be derived from base values, for later use
+     *
+     * @method setDerivedAxesProperties
+     */
     Cangraph.prototype.setDerivedAxesProperties = function () {
         this.set('x0', this.options.axes.xOffset + .5 * this.canvas.width);
         this.set('y0', this.options.axes.yOffset + .5 * this.canvas.height);
@@ -82,6 +102,12 @@
         }
     };
 
+    /**
+     * Set graph properties, that can be derived from base values, for later
+     * use.
+     *
+     * @method setDerivedGraphProperties
+     */
     Cangraph.prototype.setDerivedGraphProperties = function () {
         this.set('graphPlottingMax', Math.round((this.canvas.width - this.x0) / this.options.graph.scale));
 
@@ -92,6 +118,11 @@
         }
     };
 
+    /**
+     * Allows us to draw the axes of the graph
+     *
+     * @method drawAxes
+     */
     Cangraph.prototype.drawAxes = function () {
         this.context.beginPath();
         this.context.strokeStyle = this.options.axes.strokeColor;
@@ -110,6 +141,11 @@
         this.context.stroke();
     };
 
+    /**
+     * Draws axes markings
+     *
+     * @method drawAxesMarkingsHelper
+     */
     Cangraph.prototype.drawAxesMarkingsHelper = function () {
         var iX;
         var iXMax = Math.ceil(this.canvas.width - this.xMin);
@@ -126,6 +162,13 @@
         }
     };
 
+    /**
+     * Plots the function and draws it as a graph
+     *
+     * @method drawGraph
+     *
+     * @param {Function} fx Function to plot, where y is a function of x
+     */
     Cangraph.prototype.drawGraph = function (fx) {
         var x;
         var y;
