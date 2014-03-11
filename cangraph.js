@@ -36,6 +36,9 @@
         // Merge defaults with passed in options
         this.options = options || {};
         this.options = $.extend(true, {}, defaults, this.options);
+
+        // Derive axes values from defaults/options and set on object
+        this.setDerivedAxesProperties();
     }
 
     Cangraph.prototype.set = function (name, value) {
@@ -54,6 +57,16 @@
         this.set('context', context);
     };
 
+    Cangraph.prototype.setDerivedAxesProperties = function () {
+        this.set('x0', this.options.axes.xOffset + .5 * this.canvas.width);
+        this.set('y0', this.options.axes.yOffset + .5 * this.canvas.height);
+
+        if (this.options.axes.showNegativeX) {
+            this.set('xMin', 0);
+        } else {
+            this.set('xMin', this.x0);
+        }
+    };
     Cangraph.prototype.draw = function (fx) {
      var axes={};
 
