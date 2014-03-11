@@ -76,21 +76,24 @@
      axes.doNegativeX = true;
 
      this.showAxes(this.context, axes);
-     this.funGraph(this.context, axes, fx, "rgb(11,153,11)", 1);
+     this.funGraph(this.context, fx, "rgb(11,153,11)", 1);
     };
 
-    Cangraph.prototype.funGraph = function (ctx,axes,func,color,thick) {
-     var xx, yy, dx=4, x0=axes.x0, y0=axes.y0, scale=axes.scale;
-     var iMax = Math.round((ctx.canvas.width-x0)/dx);
-     var iMin = axes.doNegativeX ? Math.round(-x0/dx) : 0;
+    Cangraph.prototype.funGraph = function (ctx,func,color,thick) {
+     var xx;
+     var yy;
+     var dx = 4;
+     var scale = this.options.axes.scale;
+     var iMax = Math.round((ctx.canvas.width-this.x0)/dx);
+     var iMin = this.options.axes.showNegativeX ? Math.round(-this.x0/dx) : 0;
      ctx.beginPath();
      ctx.lineWidth = thick;
      ctx.strokeStyle = color;
 
      for (var i=iMin;i<=iMax;i++) {
       xx = dx*i; yy = scale*func(xx/scale);
-      if (i==iMin) ctx.moveTo(x0+xx,y0-yy);
-      else         ctx.lineTo(x0+xx,y0-yy);
+      if (i==iMin) ctx.moveTo(this.x0+xx,this.y0-yy);
+      else         ctx.lineTo(this.x0+xx,this.y0-yy);
      }
      ctx.stroke();
     };
