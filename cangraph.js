@@ -15,7 +15,15 @@
      *
      * @param {String} canvasId The canvas element to draw on
      */
-    function Cangraph(canvasId) {
+    function Cangraph(canvasId, options) {
+        var defaults = {
+            axes: {
+                xOffset: 0,
+                yOffset: 0,
+                scale: 40,
+                showNegativeX: true
+            }
+        };
         var canvas;
 
         this.set('canvasId', canvasId);
@@ -24,6 +32,10 @@
         this.set('canvas', canvas);
 
         this.setContext();
+
+        // Merge defaults with passed in options
+        this.options = options || {};
+        this.options = $.extend(true, {}, defaults, this.options);
     }
 
     Cangraph.prototype.set = function (name, value) {
