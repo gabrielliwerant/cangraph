@@ -24,6 +24,10 @@
                 scale: 40,
                 showNegativeX: true,
                 strokeColor: '#000000'
+            },
+            graph: {
+                strokeColor: '#1fcd38',
+                lineWidth: '1'
             }
         };
         var canvas;
@@ -79,27 +83,23 @@
         this.context.stroke();
     };
 
-    Cangraph.prototype.draw = function (fx) {
-     this.funGraph(this.context, fx, "rgb(11,153,11)", 1);
-    };
-
-    Cangraph.prototype.funGraph = function (ctx,func,color,thick) {
+    Cangraph.prototype.drawGraph = function (fx) {
      var xx;
      var yy;
      var dx = 4;
      var scale = this.options.axes.scale;
-     var iMax = Math.round((ctx.canvas.width-this.x0)/dx);
+     var iMax = Math.round((this.canvas.width-this.x0)/dx);
      var iMin = this.options.axes.showNegativeX ? Math.round(-this.x0/dx) : 0;
-     ctx.beginPath();
-     ctx.lineWidth = thick;
-     ctx.strokeStyle = color;
+     this.context.beginPath();
+     this.context.lineWidth = this.options.graph.lineWidth;
+     this.context.strokeStyle = this.options.graph.strokeColor;
 
      for (var i=iMin;i<=iMax;i++) {
-      xx = dx*i; yy = scale*func(xx/scale);
-      if (i==iMin) ctx.moveTo(this.x0+xx,this.y0-yy);
-      else         ctx.lineTo(this.x0+xx,this.y0-yy);
+      xx = dx*i; yy = scale*fx(xx/scale);
+      if (i==iMin) this.context.moveTo(this.x0+xx,this.y0-yy);
+      else         this.context.lineTo(this.x0+xx,this.y0-yy);
      }
-     ctx.stroke();
+     this.context.stroke();
     };
 
     // Attach object to global namespace
