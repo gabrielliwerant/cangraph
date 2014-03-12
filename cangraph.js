@@ -8,6 +8,7 @@
  *
  * @todo Allow setting into nesting objects for better organization
  * @todo Make plot able to ignore negative values for y
+ * @todo Write standalone merge function to eliminate need for jquery
  */
 (function ($) {
 
@@ -17,7 +18,7 @@
      * @class Cangraph
      *
      * @param {String} canvasId The canvas element to draw on
-     * @param {Object} options Allows us to change defaults upon instantiation
+     * @param {Object} options Allows us to override defaults upon instantiation
      */
     function Cangraph(canvasId, options) {
         var defaults = {
@@ -41,8 +42,8 @@
             },
             graph: {
                 strokeColor: '#1fcd38',
-                lineWidth: '1',
-                scale: 4
+                lineWidth: 3,
+                smoothnessScale: 4
             },
             point: {
                 strokeColor: '#e61a3f',
@@ -133,10 +134,10 @@
      * @method setDerivedGraphProperties
      */
     Cangraph.prototype.setDerivedGraphProperties = function () {
-        this.set('graphPlottingMax', Math.round((this.canvas.width - this.x0) / this.options.graph.scale));
+        this.set('graphPlottingMax', Math.round((this.canvas.width - this.x0) / this.options.graph.smoothnessScale));
 
         if (this.options.axes.showNegativeX) {
-            this.set('graphPlottingMin', Math.round(-this.x0 / this.options.graph.scale));
+            this.set('graphPlottingMin', Math.round(-this.x0 / this.options.graph.smoothnessScale));
         } else {
             this.set('graphPlottingMin', 0);
         }
@@ -246,7 +247,6 @@
         var x;
         var y;
         var i;
-        var fx;
 
         this.context.beginPath();
 
@@ -260,7 +260,7 @@
 
         // Loop for function plotting
         for (i = this.graphPlottingMin; i <= this.graphPlottingMax; i += 1) {
-            x = this.options.graph.scale * i;
+            x = this.options.graph.smoothnessScale * i;
             y = this.options.axes.scale * fx(x / this.options.axes.scale);
 
             if (i === this.graphPlottingMin) {
@@ -291,7 +291,7 @@
         this.context.beginPath();
         this.context.moveTo(this.x0 + x, this.y0 - y);
 
-        x = this.options.graph.scale * value;
+        x = this.options.graph.smoothnessScale * value;
         y = this.options.axes.scale * fx(x / this.options.axes.scale);
 
         this.context.arc(this.x0 + x, this.y0 - y, this.options.point.radius, 0, Math.PI * 2, false);
