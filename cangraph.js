@@ -235,55 +235,44 @@
     };
 
     /**
-     * Plots an arbitrary number of functions and draws them as graphs
+     * Plots a function and draws it as a graph
      *
      * @method drawGraph
      *
-     * @param {Object}
-     *      @param {Function} fx Function to plot
-     *      @param {String} strokeColor Optional color value to override default
+     * @param {Function} fx Function to plot
+     * @param {String} color Optional color value to override default
      */
-    Cangraph.prototype.drawGraph = function () {
+    Cangraph.prototype.drawGraph = function (fx, color) {
         var x;
         var y;
         var i;
-        var j;
         var fx;
 
-        // Outer loop for function arguments
-        for (i = 0; i < arguments.length; i += 1) {
-            if ( ! this.validate('fx', arguments[i].fx)) {
-                continue;
-            }
+        this.context.beginPath();
 
-            fx = arguments[i].fx;
-
-            this.context.beginPath();
-
-            // Set up line options
-            this.context.lineWidth = this.options.graph.lineWidth;
-            if (typeof arguments[i].strokeColor !== 'undefined') {
-                this.context.strokeStyle = arguments[i].strokeColor;
-            } else {
-                this.context.strokeStyle = this.options.graph.strokeColor;
-            }
-
-            // Inner loop for function plotting
-            for (j = this.graphPlottingMin; j <= this.graphPlottingMax; j += 1) {
-                x = this.options.graph.scale * j;
-                y = this.options.axes.scale * fx(x / this.options.axes.scale);
-
-                if (j === this.graphPlottingMin) {
-                    // Run only for the first iteration
-                    this.context.moveTo(this.x0 + x, this.y0 - y);
-                } else {
-                    this.context.lineTo(this.x0 + x, this.y0 - y);
-                }
-            }
-
-            this.context.stroke();
-            this.context.closePath();
+        // Set up line options
+        this.context.lineWidth = this.options.graph.lineWidth;
+        if (typeof color !== 'undefined') {
+            this.context.strokeStyle = color;
+        } else {
+            this.context.strokeStyle = this.options.graph.strokeColor;
         }
+
+        // Loop for function plotting
+        for (i = this.graphPlottingMin; i <= this.graphPlottingMax; i += 1) {
+            x = this.options.graph.scale * i;
+            y = this.options.axes.scale * fx(x / this.options.axes.scale);
+
+            if (i === this.graphPlottingMin) {
+                // Run only for the first iteration
+                this.context.moveTo(this.x0 + x, this.y0 - y);
+            } else {
+                this.context.lineTo(this.x0 + x, this.y0 - y);
+            }
+        }
+
+        this.context.stroke();
+        this.context.closePath();
     };
 
     /**

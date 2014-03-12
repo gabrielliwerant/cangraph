@@ -21,7 +21,8 @@
             var cangraph = new Cangraph('cangraph-ex1');
 
             cangraph.drawAxes();
-            cangraph.drawGraph({fx: fx1, strokeColor: '#3079ed'}, {fx: fx2, strokeColor: '#1fcd38'});
+            cangraph.drawGraph(fx1, '#3079ed');
+            cangraph.drawGraph(fx2);
             cangraph.drawPlottedValue(fx1, 20);
         });
     </script>
