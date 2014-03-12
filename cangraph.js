@@ -49,7 +49,8 @@
                 strokeColor: '#e61a3f',
                 lineWidth: 11,
                 radius: 3,
-                fillColor: '#000000'
+                fillColor: '#000000',
+                doPercent: true
             }
         };
         var canvas;
@@ -276,6 +277,34 @@
     };
 
     /**
+     * Based on our graph boundaries, find the equivalent x value as a percent
+     * of possible x values.
+     *
+     * @method getXValueEquivalentForPercent
+     *
+     * @param {Integer} percent To determine proper x value for function
+     */
+    Cangraph.prototype.getXValueEquivalentForPercent = function (percent) {
+        var plottingWidth = this.graphPlottingMax * 2;
+        var xValueEquivalentForPercent;
+        var halfAxisPercent;
+
+        if (percent >= 0 && percent <= 50) {
+            halfAxisPercent = 50 - percent;
+            xValueEquivalentForPercent = -Math.floor(plottingWidth * (halfAxisPercent / 100));
+        } else if (percent > 50 && percent <= 100) {
+            halfAxisPercent = percent - 50;
+            xValueEquivalentForPercent = Math.floor(plottingWidth * (halfAxisPercent / 100));
+        } else {
+            console.log(percent, 'is not a valid percentage to use with graph. Please use a value from 0 to 100');
+
+            return false;
+        }
+
+        return xValueEquivalentForPercent;
+    };
+
+    /**
      * Finds a single point on a function and plots it
      *
      * @method drawPlottedValue
@@ -287,12 +316,22 @@
         var x;
         var y;
         var j;
+        var convertedPercent;
 
         this.context.beginPath();
         this.context.moveTo(this.x0 + x, this.y0 - y);
 
-        x = this.options.graph.smoothnessScale * value;
-        y = this.options.axes.scale * fx(x / this.options.axes.scale);
+        if (this.options.point.doPercent) {
+            convertedPercent = this.getXValueEquivalentForPercent(value);
+
+            if (convertedPercent) {
+                x = this.options.graph.smoothnessScale * convertedPercent;
+                y = this.options.axes.scale * fx(x / this.options.axes.scale);
+            }
+        } else {
+            x = this.options.graph.smoothnessScale * value;
+            y = this.options.axes.scale * fx(x / this.options.axes.scale);
+        }
 
         this.context.arc(this.x0 + x, this.y0 - y, this.options.point.radius, 0, Math.PI * 2, false);
         this.context.strokeStyle = this.options.point.strokeColor;
