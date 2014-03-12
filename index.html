@@ -16,11 +16,12 @@
 
     <script>
         $(document).ready(function () {
-            var fx1 = function (x) { return Math.sin(x); }
+            var fx1 = function (x) { return Math.sin(x); };
+            var fx2 = function (x) { return Math.cos(x); };
             var cangraph = new Cangraph('cangraph-ex1');
 
             cangraph.drawAxes();
-            cangraph.drawGraph(fx1);
+            cangraph.drawGraph({fx: fx1, strokeColor: '#3079ed'}, {fx: fx2, strokeColor: '#1fcd38'});
         });
     </script>
 </body>

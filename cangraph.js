@@ -215,34 +215,51 @@
     };
 
     /**
-     * Plots the function and draws it as a graph
+     * Plots an arbitrary number of functions and draws them as graphs
      *
      * @method drawGraph
      *
-     * @param {Function} fx Function to plot, where y is a function of x
+     * @param {Object}
+     *      @param {Function} fx Function to plot
+     *      @param {String} strokeColor Optional color value to override default
      */
-    Cangraph.prototype.drawGraph = function (fx) {
+    Cangraph.prototype.drawGraph = function () {
         var x;
         var y;
         var i;
+        var j;
+        var fx;
 
-        this.context.beginPath();
-        this.context.lineWidth = this.options.graph.lineWidth;
-        this.context.strokeStyle = this.options.graph.strokeColor;
+        // Outer loop for function arguments
+        for (i = 0; i < arguments.length; i += 1) {
+            fx = arguments[i].fx;
 
-        for (i = this.graphPlottingMin; i <= this.graphPlottingMax; i += 1) {
-            x = this.options.graph.scale * i;
-            y = this.options.axes.scale * fx(x / this.options.axes.scale);
+            this.context.beginPath();
 
-            if (i === this.graphPlottingMin) {
-                // Run only for the first iteration
-                this.context.moveTo(this.x0 + x, this.y0 - y);
+            // Set up line options
+            this.context.lineWidth = this.options.graph.lineWidth;
+            if (typeof arguments[i].strokeColor !== 'undefined') {
+                this.context.strokeStyle = arguments[i].strokeColor;
             } else {
-                this.context.lineTo(this.x0 + x, this.y0 - y);
+                this.context.strokeStyle = this.options.graph.strokeColor;
             }
-        }
 
-        this.context.stroke();
+            // Inner loop for function plotting
+            for (j = this.graphPlottingMin; j <= this.graphPlottingMax; j += 1) {
+                x = this.options.graph.scale * j;
+                y = this.options.axes.scale * fx(x / this.options.axes.scale);
+
+                if (j === this.graphPlottingMin) {
+                    // Run only for the first iteration
+                    this.context.moveTo(this.x0 + x, this.y0 - y);
+                } else {
+                    this.context.lineTo(this.x0 + x, this.y0 - y);
+                }
+            }
+
+            this.context.stroke();
+            this.context.closePath();
+        }
     };
 
     // Attach object to global namespace
