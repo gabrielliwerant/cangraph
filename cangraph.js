@@ -62,6 +62,24 @@
     }
 
     /**
+     * Determines if a value is undefined or null and presents and error message
+     *
+     * @method validate
+     *
+     * @param {String} name Description for value
+     * @param {Mixed} value To validate
+     */
+    Cangraph.prototype.validate = function (name, value) {
+        if (value === null || typeof value === 'undefined') {
+            console.log(name, 'is undefined or null!');
+
+            return false;
+        }
+
+        return true;
+    };
+
+    /**
      * Basic setter to help provide validation and error checking
      *
      * @method set
@@ -70,13 +88,9 @@
      * @param {Mixed} value To store in member name
      */
     Cangraph.prototype.set = function (name, value) {
-        if (value === null || typeof value === 'undefined') {
-            console.log(name, 'is undefined or null!');
-
-            return false;
+        if (this.validate(name, value)) {
+            this[name] = value;
         }
-
-        this[name] = value;
     };
 
     /**
@@ -232,6 +246,10 @@
 
         // Outer loop for function arguments
         for (i = 0; i < arguments.length; i += 1) {
+            if ( ! this.validate('fx', arguments[i].fx)) {
+                continue;
+            }
+
             fx = arguments[i].fx;
 
             this.context.beginPath();
