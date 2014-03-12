@@ -284,7 +284,7 @@
      *
      * @param {Integer} percent To determine proper x value for function
      */
-    Cangraph.prototype.getXValueEquivalentForPercent = function (percent) {
+    Cangraph.prototype.getXValueEquivalentFromPercent = function (percent) {
         var plottingWidth = this.graphPlottingMax * 2;
         var xValueEquivalentForPercent;
         var halfAxisPercent;
@@ -322,7 +322,7 @@
         this.context.moveTo(this.x0 + x, this.y0 - y);
 
         if (this.options.point.doPercent) {
-            convertedPercent = this.getXValueEquivalentForPercent(value);
+            convertedPercent = this.getXValueEquivalentFromPercent(value);
 
             if (convertedPercent) {
                 x = this.options.graph.smoothnessScale * convertedPercent;
