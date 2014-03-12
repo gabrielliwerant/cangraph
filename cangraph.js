@@ -292,7 +292,6 @@
         if (percent >= 0 && percent <= 50) {
             halfAxisPercent = 50 - percent;
             xValueEquivalentForPercent = -Math.floor(plottingWidth * (halfAxisPercent / 100));
-            console.log(xValueEquivalentForPercent);
         } else if (percent > 50 && percent <= 100) {
             halfAxisPercent = percent - 50;
             xValueEquivalentForPercent = Math.floor(plottingWidth * (halfAxisPercent / 100));
