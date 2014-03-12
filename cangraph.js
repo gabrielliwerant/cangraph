@@ -7,6 +7,7 @@
  * @link http://www.javascripter.net/faq/plotafunctiongraph.htm
  *
  * @todo Allow setting into nesting objects for better organization
+ * @todo Make plot able to ignore negative values for y
  */
 (function ($) {
 
@@ -33,7 +34,9 @@
                     showX: true,
                     showY: true,
                     xInterval: 10,
-                    xHeight: 5
+                    yInterval: 10,
+                    xHeight: 5,
+                    yWidth: 5
                 }
             },
             graph: {
@@ -123,6 +126,8 @@
      * Allows us to draw the axes of the graph
      *
      * @method drawAxes
+     *
+     * @todo Keep axes markings separate from axes lines?
      */
     Cangraph.prototype.drawAxes = function () {
         this.context.beginPath();
@@ -132,7 +137,6 @@
             this.context.moveTo(this.xMin, this.y0);
             this.context.lineTo(this.canvas.width, this.y0);
         }
-
         if (this.options.axes.showYAxis) {
             if (this.options.axes.showNegativeY) {
                 this.context.moveTo(this.x0, 0);
@@ -143,18 +147,24 @@
             }
         }
 
-        this.drawAxesMarkingsHelper();
+        if (this.options.axes.markings.showX) {
+            this.drawXAxisMarkings();
+        }
+        if (this.options.axes.markings.showY) {
+            this.drawYAxisMarkings();
+        }
+
         this.context.stroke();
     };
 
     /**
-     * Draws axes markings
+     * Draws markings for x-axis
      *
-     * @method drawAxesMarkingsHelper
+     * @method drawXAxisMarkings
      */
-    Cangraph.prototype.drawAxesMarkingsHelper = function () {
+    Cangraph.prototype.drawXAxisMarkings = function () {
         var iX;
-        var iMax;
+        var iXMax;
         var iXMaxScale = Math.ceil((this.canvas.width - this.xMin) / this.options.axes.markings.xInterval);
 
         if (this.options.axes.showNegativeX) {
@@ -165,11 +175,39 @@
             iXMax = this.canvas.width;
         }
 
-        if (this.options.axes.markings.showX) {
-            for (iX; iX <= iXMax; iX += 1) {
-                if (iX % iXMaxScale === 0) {
-                    this.context.moveTo(iX, this.y0 + this.options.axes.markings.xHeight);
-                    this.context.lineTo(iX, this.y0 - this.options.axes.markings.xHeight);
+        for (iX; iX <= iXMax; iX += 1) {
+            if (iX % iXMaxScale === 0) {
+                this.context.moveTo(iX, this.y0 + this.options.axes.markings.xHeight);
+                this.context.lineTo(iX, this.y0 - this.options.axes.markings.xHeight);
+                this.context.strokeStyle = this.options.axes.strokeColor;
+            }
+        }
+    };
+
+    /**
+     * Draws markings for y-axis
+     *
+     * @method drawYAxisMarkings
+     */
+    Cangraph.prototype.drawYAxisMarkings = function () {
+        var iY;
+        var iYMax;
+        var iYMaxScale = Math.ceil(this.canvas.height / this.options.axes.markings.yInterval);
+        var halfCanvasHeight = Math.ceil(this.canvas.height / 2);
+
+        if (this.options.axes.showNegativeY) {
+            iY = 0;
+            iYMax = Math.ceil(this.canvas.width - this.xMin);
+        } else {
+            iY = halfCanvasHeight;
+            iYMax = this.canvas.height;
+        }
+
+        if (this.options.axes.markings.showY) {
+            for (iY; iY <= iYMax; iY += 1) {
+                if (iY % iYMaxScale === 0) {
+                    this.context.moveTo(this.options.axes.markings.yWidth + halfCanvasHeight, iY);
+                    this.context.lineTo(-this.options.axes.markings.yWidth + halfCanvasHeight, iY);
                     this.context.strokeStyle = this.options.axes.strokeColor;
                 }
             }
