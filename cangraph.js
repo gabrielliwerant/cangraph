@@ -43,6 +43,12 @@
                 strokeColor: '#1fcd38',
                 lineWidth: '1',
                 scale: 4
+            },
+            point: {
+                strokeColor: '#e61a3f',
+                lineWidth: 11,
+                radius: 3,
+                fillColor: '#000000'
             }
         };
         var canvas;
@@ -278,6 +284,34 @@
             this.context.stroke();
             this.context.closePath();
         }
+    };
+
+    /**
+     * Finds a single point on a function and plots it
+     *
+     * @method drawPlottedValue
+     *
+     * @param {Function} fx Function to plot point for
+     * @param {Integer} value X value point to plot
+     */
+    Cangraph.prototype.drawPlottedValue = function (fx, value) {
+        var x;
+        var y;
+        var j;
+
+        this.context.beginPath();
+        this.context.moveTo(this.x0 + x, this.y0 - y);
+
+        x = this.options.graph.scale * value;
+        y = this.options.axes.scale * fx(x / this.options.axes.scale);
+
+        this.context.arc(this.x0 + x, this.y0 - y, this.options.point.radius, 0, Math.PI * 2, false);
+        this.context.strokeStyle = this.options.point.strokeColor;
+        this.context.lineWidth = this.options.point.lineWidth;
+        this.context.stroke();
+        this.context.fillStyle = this.options.point.fillColor;
+        this.context.fill();
+        this.context.closePath();
     };
 
     // Attach object to global namespace
