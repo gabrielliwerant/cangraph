@@ -148,11 +148,19 @@
      */
     Cangraph.prototype.drawAxesMarkingsHelper = function () {
         var iX;
-        var iXMax = Math.ceil(this.canvas.width - this.xMin);
+        var iMax;
         var iXMaxScale = Math.ceil((this.canvas.width - this.xMin) / this.options.axes.markings.xInterval);
 
+        if (this.options.axes.showNegativeX) {
+            iX = 0;
+            iXMax = Math.ceil(this.canvas.width - this.xMin);
+        } else {
+            iX = Math.ceil(this.canvas.width / 2);
+            iXMax = this.canvas.width;
+        }
+
         if (this.options.axes.markings.showX) {
-            for (iX = Math.floor(this.xMin); iX <= iXMax; iX += 1) {
+            for (iX; iX <= iXMax; iX += 1) {
                 if (iX % iXMaxScale === 0) {
                     this.context.moveTo(iX, this.y0 + this.options.axes.markings.xHeight);
                     this.context.lineTo(iX, this.y0 - this.options.axes.markings.xHeight);
