@@ -292,6 +292,7 @@
         if (percent >= 0 && percent <= 50) {
             halfAxisPercent = 50 - percent;
             xValueEquivalentForPercent = -Math.floor(plottingWidth * (halfAxisPercent / 100));
+            console.log(xValueEquivalentForPercent);
         } else if (percent > 50 && percent <= 100) {
             halfAxisPercent = percent - 50;
             xValueEquivalentForPercent = Math.floor(plottingWidth * (halfAxisPercent / 100));
@@ -324,7 +325,7 @@
         if (this.options.point.doPercent) {
             convertedPercent = this.getXValueEquivalentFromPercent(value);
 
-            if (convertedPercent) {
+            if (convertedPercent !== 'false') {
                 x = this.options.graph.smoothnessScale * convertedPercent;
                 y = this.options.axes.scale * fx(x / this.options.axes.scale);
             }
