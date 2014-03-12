@@ -28,8 +28,8 @@
                 showNegativeX: true,
                 showNegativeY: true,
                 strokeColor: '#000000',
-                showXAxis: true,
-                showYAxis: true,
+                showX: true,
+                showY: true,
                 markings: {
                     showX: true,
                     showY: true,
@@ -133,11 +133,11 @@
         this.context.beginPath();
         this.context.strokeStyle = this.options.axes.strokeColor;
 
-        if (this.options.axes.showXAxis) {
+        if (this.options.axes.showX) {
             this.context.moveTo(this.xMin, this.y0);
             this.context.lineTo(this.canvas.width, this.y0);
         }
-        if (this.options.axes.showYAxis) {
+        if (this.options.axes.showY) {
             if (this.options.axes.showNegativeY) {
                 this.context.moveTo(this.x0, 0);
                 this.context.lineTo(this.x0, this.canvas.height);
@@ -235,6 +235,7 @@
             y = this.options.axes.scale * fx(x / this.options.axes.scale);
 
             if (i === this.graphPlottingMin) {
+                // Run only for the first iteration
                 this.context.moveTo(this.x0 + x, this.y0 - y);
             } else {
                 this.context.lineTo(this.x0 + x, this.y0 - y);
