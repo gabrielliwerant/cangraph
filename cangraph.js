@@ -25,6 +25,7 @@
                 yOffset: 0,
                 scale: 40,
                 showNegativeX: true,
+                showNegativeY: true,
                 strokeColor: '#000000',
                 showXAxis: true,
                 showYAxis: true,
@@ -133,8 +134,13 @@
         }
 
         if (this.options.axes.showYAxis) {
-            this.context.moveTo(this.x0, 0);
-            this.context.lineTo(this.x0, this.canvas.height);
+            if (this.options.axes.showNegativeY) {
+                this.context.moveTo(this.x0, 0);
+                this.context.lineTo(this.x0, this.canvas.height);
+            } else {
+                this.context.moveTo(this.x0, -this.y0);
+                this.context.lineTo(this.x0, Math.ceil(this.canvas.height / 2));
+            }
         }
 
         this.drawAxesMarkingsHelper();
